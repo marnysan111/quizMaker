@@ -1,0 +1,49 @@
+version: '3.8'
+
+services: 
+  mysql:
+    build: ./mysql
+    tty: true
+    ports: 
+      - "3306:3306"
+    container_name: quiz_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    platform: linux/x86_64
+    networks: 
+      - backend
+
+  go:
+    build: ./go
+    tty: true
+    ports: 
+      - "8080:8080"
+    container_name: quiz_go
+    volumes: 
+      - ./go:/usr/src
+    depends_on:
+      - mysql
+    networks: 
+      - backend
+      - frontend
+
+  react:
+    build: ./react
+    tty: true
+    ports:
+      - "3000:3000"
+    container_name: quiz_react
+    volumes: 
+      - ./react:/usr/src
+      - /usr/src/app/node_modules
+    depends_on:
+      - python
+    networks:
+      - frontend
+
+networks:
+  backend:
+  frontend:
