@@ -40,7 +40,7 @@ services:
       - ./react:/usr/src
       - /usr/src/app/node_modules
     depends_on:
-      - python
+      - go
     networks:
       - frontend
 

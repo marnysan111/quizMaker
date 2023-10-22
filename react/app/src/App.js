@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Helmet } from "react-helmet"
+import Header from "./components/Header";
+import WebSocketClient from "./components/websocket";
+import ApiFetcher from "./components/api";
+import CreateRoom from "./components/createRoom";
 function App() {
   return (
-    <div className="App">
+    <div>
+      <Helmet>
+        <title>QuizMaker - TopPage</title>
+      </Helmet>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <WebSocketClient />
       </header>
+      <ApiFetcher />
+      <CreateRoom />
     </div>
   );
 }
