@@ -2,10 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/marnysan111/quizMaker/room"
+	"golang.org/x/exp/slices"
 )
 
 type RoomRequest struct {
@@ -23,15 +23,21 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to decode JSON", http.StatusBadRequest)
 		return
 	}
-	fmt.Println(roomReq.RoomName)
-	roomID := room.GenerateRandomRoomID()          // ここでIDを生成
-	room := room.NewRoom(roomID, roomReq.RoomName) // 新しい部屋のインスタンスを作成
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(room)
+	if !slices.Contains(room.RoomHub.ListRooms(), roomReq.RoomName) {
+		roomID := room.GenerateRandomRoomID()          // ここでIDを生成
+		room := room.NewRoom(roomID, roomReq.RoomName) // 新しい部屋のインスタンスを作成
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(room)
+	} else {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest) // 400 Bad Request
+		errorMessage := map[string]string{"error": "同じ部屋が既に登録されています"}
+		json.NewEncoder(w).Encode(errorMessage)
+	}
 }
 
 func ListRoom(w http.ResponseWriter, r *http.Request) {
-	rooms := room.RoomHub.ListRooms()
+	rooms := room.RoomHub.ListRoomsInfo()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(rooms)
 }

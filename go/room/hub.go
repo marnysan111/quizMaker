@@ -1,7 +1,5 @@
 package room
 
-import "fmt"
-
 type Hub struct {
 	Rooms      map[string]*Room
 	Register   chan *Client
@@ -42,18 +40,19 @@ func (h *Hub) Run() {
 				h.Rooms[roomID] = room
 			}
 			room.Clients[client] = true
-		case client := <-h.Unregister:
-			roomID := client.RoomID
-			if room, ok := h.Rooms[roomID]; ok {
-				if _, ok := room.Clients[client]; ok {
-					delete(room.Clients, client)
-					close(client.Send)
-				}
+		// 人がいなくなったら消すから一旦コメントアウト
+		// case client := <-h.Unregister:
+		// 	roomID := client.RoomID
+		// 	if room, ok := h.Rooms[roomID]; ok {
+		// 		if _, ok := room.Clients[client]; ok {
+		// 			delete(room.Clients, client)
+		// 			close(client.Send)
+		// 		}
 
-				if len(room.Clients) == 0 {
-					delete(h.Rooms, roomID)
-				}
-			}
+		// 		if len(room.Clients) == 0 {
+		// 			delete(h.Rooms, roomID)
+		// 		}
+		// 	}
 
 		case message := <-h.Broadcast:
 			if room, exists := h.Rooms[message.RoomID]; exists {
@@ -81,6 +80,21 @@ func (h *Hub) ListRooms() []string {
 	return roomNames
 }
 
-func ListRoomsName() {
-	fmt.Println(&Room{})
+type RoomInfo struct {
+	RoomID   string
+	RoomName string
+}
+
+func (h *Hub) ListRoomsInfo() []RoomInfo {
+	var roomsInfo []RoomInfo
+	for _, room := range h.Rooms {
+		if room.Name != "" {
+			info := RoomInfo{
+				RoomID:   room.ID,
+				RoomName: room.Name,
+			}
+			roomsInfo = append(roomsInfo, info)
+		}
+	}
+	return roomsInfo
 }

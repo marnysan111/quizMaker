@@ -41,8 +41,6 @@ type Client struct {
 // ensures that there is at most one reader on a connection by executing all
 // reads from this goroutine.
 func (c *Client) ReadPump() {
-	fmt.Println("Read")
-
 	defer func() {
 		c.Hub.Unregister <- c
 		c.Conn.Close()
@@ -54,6 +52,8 @@ func (c *Client) ReadPump() {
 			c.Conn.SetReadDeadline(time.Now().Add(pongWait))
 			return nil
 		})
+	fmt.Println(c.Hub.Rooms[c.RoomID].Clients)
+
 	for {
 		_, message, err := c.Conn.ReadMessage()
 		if err != nil {

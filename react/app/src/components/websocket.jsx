@@ -5,7 +5,7 @@ const WebSocketClient = () => {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const websocket = new WebSocket('ws://localhost:8080/ws');
+    const websocket = new WebSocket('ws://localhost:8080/api/ws');
     websocket.onopen = () => {
       console.log('Connected to the websocket');
     };

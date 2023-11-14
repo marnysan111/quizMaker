@@ -3,6 +3,7 @@ package room
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 )
 
 var RoomHub = NewHub()
@@ -23,5 +24,6 @@ func NewRoom(roomID string, name string) map[string]string {
 		"roomID":   roomID,
 		"roomName": name,
 	}
+	fmt.Println("[Create Room]RoomID:", roomID, "Name:", name)
 	return response
 }

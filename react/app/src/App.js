@@ -1,20 +1,20 @@
 import { Helmet } from "react-helmet"
-import Header from "./components/Header";
-import WebSocketClient from "./components/websocket";
-import ApiFetcher from "./components/api";
-import CreateRoom from "./components/createRoom";
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/home'
+import Room from './pages/room'
+
 function App() {
   return (
-    <div>
+    <BrowserRouter>
       <Helmet>
         <title>QuizMaker - TopPage</title>
       </Helmet>
-      <header className="App-header">
-        <WebSocketClient />
-      </header>
-      <ApiFetcher />
-      <CreateRoom />
-    </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/room" element={<Room />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
