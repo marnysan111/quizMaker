@@ -24,8 +24,7 @@ const CreateRoom = () => {
             const response = await axios.post('/api/createroom', { roomName: roomName });
             fetchRooms()
             setRoomName("")
-            alertTest(roomName)
-            console.log('Created room with ID:', response.data);
+            SuccessAlert(roomName)
         } catch (error) {
             if (error.response) {
                 // サーバーがエラーレスポンスを返した場合
@@ -43,7 +42,7 @@ const CreateRoom = () => {
         }
     };
 
-    const alertTest = (name) => {
+    const SuccessAlert = (name) => {
         const message = '部屋の作成に成功しました　部屋名：' + name
         showAlert('success', message)
     }
@@ -59,7 +58,7 @@ const CreateRoom = () => {
             />
             </div>
             <div className="col-span-12 md:col-span-3 lg:col-span-2">
-            <button className="bg-cyberBlue hover:bg-turquoise text-white rounded-lg w-full h-full"onClick={createRoom}>
+            <button className="bg-cyberBlue transition-transform transform hover:scale-110 ease-out duration-300 text-white rounded-lg w-full h-full"onClick={createRoom}>
                 部屋の作成
             </button>
             </div>
