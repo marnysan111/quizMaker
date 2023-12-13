@@ -13,9 +13,10 @@ type Message struct {
 }
 
 type Room struct {
-	ID      string
-	Name    string
-	Clients map[*Client]bool
+	ID             string
+	Name           string
+	CreateUserName string
+	Clients        map[*Client]bool
 }
 
 func NewHub() *Hub {
@@ -81,8 +82,9 @@ func (h *Hub) ListRooms() []string {
 }
 
 type RoomInfo struct {
-	RoomID   string
-	RoomName string
+	ID             string `json:"roomID"`
+	CreateUserName string `json:"createUserName"`
+	RoomName       string `json:"roomName"`
 }
 
 func (h *Hub) ListRoomsInfo() []RoomInfo {
@@ -90,8 +92,9 @@ func (h *Hub) ListRoomsInfo() []RoomInfo {
 	for _, room := range h.Rooms {
 		if room.Name != "" {
 			info := RoomInfo{
-				RoomID:   room.ID,
-				RoomName: room.Name,
+				ID:             room.ID,
+				CreateUserName: room.CreateUserName,
+				RoomName:       room.Name,
 			}
 			roomsInfo = append(roomsInfo, info)
 		}

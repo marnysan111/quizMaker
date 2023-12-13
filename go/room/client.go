@@ -52,7 +52,6 @@ func (c *Client) ReadPump() {
 			c.Conn.SetReadDeadline(time.Now().Add(pongWait))
 			return nil
 		})
-	fmt.Println(c.Hub.Rooms[c.RoomID].Clients)
 
 	for {
 		_, message, err := c.Conn.ReadMessage()
@@ -66,6 +65,7 @@ func (c *Client) ReadPump() {
 		//c.Hub.Broadcast <- message
 		//c.Hub.Broadcast <- Message{Data: message, RoomID: c.RoomID}
 		room, ok := c.Hub.Rooms[c.RoomID]
+		fmt.Println("ROOM is: ", room)
 		if ok {
 			for client := range room.Clients {
 				select {

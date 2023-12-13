@@ -14,16 +14,18 @@ func GenerateRandomRoomID() string {
 	return base64.URLEncoding.EncodeToString(b)
 }
 
-func NewRoom(roomID string, name string) map[string]string {
+func NewRoom(roomID string, name string, createUserName string) map[string]string {
 	RoomHub.Rooms[roomID] = &Room{
-		ID:      roomID,
-		Name:    name,
-		Clients: make(map[*Client]bool),
+		ID:             roomID,
+		CreateUserName: createUserName,
+		Name:           name,
+		Clients:        make(map[*Client]bool),
 	}
 	response := map[string]string{
-		"roomID":   roomID,
-		"roomName": name,
+		"roomID":         roomID,
+		"roomName":       name,
+		"createUserName": createUserName,
 	}
-	fmt.Println("[Create Room]RoomID:", roomID, "Name:", name)
+	fmt.Println("[Create Room]RoomID:", roomID, "Name:", name, "CreateUserName:", createUserName)
 	return response
 }

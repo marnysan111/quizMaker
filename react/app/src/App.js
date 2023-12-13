@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet"
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home'
-import Room from './pages/room'
+import RoomList from './pages/rooms'
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       </Helmet>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/room" element={<Room />} />
+        <Route path="/rooms" element={<RoomList />} />
       </Routes>
     </BrowserRouter>
   );

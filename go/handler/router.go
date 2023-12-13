@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/marnysan111/quizMaker/room"
@@ -9,7 +10,8 @@ import (
 )
 
 type RoomRequest struct {
-	RoomName string `json:"roomName"`
+	CreateUserName string `json:"createUserName"`
+	RoomName       string `json:"roomName"`
 }
 
 func CreateRoom(w http.ResponseWriter, r *http.Request) {
@@ -24,8 +26,8 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if !slices.Contains(room.RoomHub.ListRooms(), roomReq.RoomName) {
-		roomID := room.GenerateRandomRoomID()          // ここでIDを生成
-		room := room.NewRoom(roomID, roomReq.RoomName) // 新しい部屋のインスタンスを作成
+		roomID := room.GenerateRandomRoomID()                                  // ここでIDを生成
+		room := room.NewRoom(roomID, roomReq.RoomName, roomReq.CreateUserName) // 新しい部屋のインスタンスを作成
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(room)
 	} else {
@@ -38,6 +40,7 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 
 func ListRoom(w http.ResponseWriter, r *http.Request) {
 	rooms := room.RoomHub.ListRoomsInfo()
+	fmt.Println("rooms", rooms)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(rooms)
 }
